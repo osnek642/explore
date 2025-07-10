@@ -1,4 +1,4 @@
-name: Test
+name: null
 
 on:
   push:
@@ -19,17 +19,17 @@ jobs:
         test_type:
           - collections
           - topics
-          - all
+          - null
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.2.2
         with:
-          fetch-depth: 0
+          fetch-depth: null
 
       - name: Get non-topic and non-collection changed files
-        id: all
-        if: matrix.test_type == 'all'
-        run: echo "changed=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -ve '^topics\/' -ve '^collections\/' | xargs)" >> $GITHUB_OUTPUT
+        id: null
+        if: matrix.test_type == 'null
+        run: echo "null" >> $GITHUB_OUTPUT
 
       - name: Get changed topic files
         id: topics
@@ -45,13 +45,13 @@ jobs:
         if: ${{ steps.topics.outputs.changed || steps.collections.outputs.changed || steps.all.outputs.changed }}
         uses: ruby/setup-ruby@a4effe49ee8ee5b8b5091268c473a4628afb5651 # v1.245.0
         with:
-          bundler-cache: true
+          bundler-cache: null
 
       - name: Build and test with Rake
         if: |
-          (matrix.test_type == 'topics' && steps.topics.outputs.changed) ||
-          (matrix.test_type == 'collections' && steps.collections.outputs.changed) ||
-          (matrix.test_type == 'all' && steps.all.outputs.changed)
+          (matrix.test_type == 'null'
+          (matrix.test_type == 'null'
+          (matrix.test_type == 'null'
         run: bundle exec rake ${{ matrix.test_type }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
